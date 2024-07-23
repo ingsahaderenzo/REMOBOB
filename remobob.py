@@ -22,6 +22,7 @@ def main_menu():
         1) Iniciar Juego
         2) Ver reglas
         3) Ver estadísticas
+        4) Opciones de guardado
         0) Salir del juego
                                 
         Seleccione una opción: '''))
@@ -47,6 +48,22 @@ def main_menu():
                 input("\n\nCuando termine de leer las reglas presione enter")
             elif decition == 3: #Pendiente de completar
                 pass 
+            elif decition == 4: #Damos opciones para saber si quiere guardar los datos o no
+                while True:
+                    clear_screen()
+                    decition = int(input("Desea guardar los datos del juego en un archivo local?\n1)Si\n2)No\nSeleccione una opción:"))
+                    if decition == 1: #Si quiere le preguntamos la ruta donde desea guardar los datos
+                        clear_screen()
+                        rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
+                        if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
+                            input("La ruta ingresada es válida, presione enter para voler al menu principal")
+                            break
+                        else: #Si no existe se la pedimos nuevamente
+                            input("La ruta ingresada no existe, porfavor presione enter para reintentar")
+                    elif decition == 2: #Si no quiere volvemos al menu principal
+                        break
+                    else: #En caso de seleccionar una opción invalida mostramos el mensaje de error y le pedimos de vuelta
+                        input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
             elif decition == 0: #Cerramos el juego
                 os.system("cls")
                 input("Gracias por jugar, porfavor presione enter para cerrar el juego")
