@@ -26,8 +26,30 @@ def main_menu():
         0) Salir del juego
                                 
         Seleccione una opción: '''))
-            if decition == 1: #Pendiente de completar
-                pass
+            if decition == 1: #Inicio del juego
+                while True: #En este bucle seleccionaremos la dificultad que tendrá el juego
+                    clear_screen()
+                    difficult = int(input('''
+            Seleccione la dificultad con la que desea jugar:
+            1) Personalizada (Máximo 10x10)
+            3) Facil (3x3)
+            5) Medio (5x5)
+            7) Dificil (7x7)'''))
+                    if difficult == 1: #Esta opción es por si los jugadores eligen jugar con una dificultad personalidad
+                        while True:
+                            clear_screen()
+                            row = int(input("Ingrese cantidad de filas: "))
+                            column = int(input("Ingrese cantidad de columnas: "))
+                            if row >10 or column>10: #Controlamos que haya como maximo 10 por un tema de dificultad de juego
+                                input("Porfavor ingrese un valor menor a 10 para columnas o filas, presione enter para reintentar")
+                                pass
+                            break
+                        break
+                    elif (difficult == 3 or difficult == 5 or difficult == 7):
+                        row , column = difficult, difficult #Para cualquier otra opción los valores serán iguales a la dificultad
+                        break
+                    else: 
+                        input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
             elif decition == 2: #Mostramos las reglas del juego y volvemos al meno principal
                 clear_screen()
                 print('''
