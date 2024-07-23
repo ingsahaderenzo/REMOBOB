@@ -51,8 +51,8 @@ def main_menu():
             elif decition == 4: #Damos opciones para saber si quiere guardar los datos o no
                 while True:
                     clear_screen()
-                    decition = int(input("Desea guardar los datos del juego en un archivo local?\n1)Si\n2)No\nSeleccione una opción:"))
-                    if decition == 1: #Si quiere le preguntamos la ruta donde desea guardar los datos
+                    save_decition = int(input("Desea guardar los datos del juego en un archivo local?\n1)Si\n2)No\nSeleccione una opción:"))
+                    if save_decition == 1: #Si quiere le preguntamos la ruta donde desea guardar los datos
                         clear_screen()
                         rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
                         if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
@@ -60,7 +60,7 @@ def main_menu():
                             break
                         else: #Si no existe se la pedimos nuevamente
                             input("La ruta ingresada no existe, porfavor presione enter para reintentar")
-                    elif decition == 2: #Si no quiere volvemos al menu principal
+                    elif save_decition == 2: #Si no quiere volvemos al menu principal
                         break
                     else: #En caso de seleccionar una opción invalida mostramos el mensaje de error y le pedimos de vuelta
                         input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
