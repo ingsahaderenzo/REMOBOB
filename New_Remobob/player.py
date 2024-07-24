@@ -1,4 +1,4 @@
-from remobob import clear_screen
+from New_Remobob.clearer import clear_screen
 
 class Player:
     def __init__(self,name):

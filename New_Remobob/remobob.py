@@ -1,13 +1,7 @@
 import os
+from clearer import clear_screen
+from player import Player as pl
 
-#Definición de funciones
-
-#Limpia la pantalla según el sistema operativo.
-def clear_screen(): 
-    if os.name == 'nt':  # Para Windows
-        os.system('cls')
-    else:  # Para Linux y MacOS
-        os.system('clear')
 
 #Menu principal del juego
 def main_menu():
@@ -29,6 +23,16 @@ def main_menu():
             if decition == 1: #Inicio del juego
                 while True: #En este bucle seleccionaremos la dificultad que tendrá el juego
                     clear_screen()
+                    nombre = input("Ingrese el nombre del primer jugador: ")
+                    if nombre == "":
+                        input("Porfavor no deje el nombre vacío, presione enter para reintentar")
+                        continue
+                    pl1 = pl(nombre)
+                    nombre = input("Ingrese el nombre del segundo jugador: ")
+                    if nombre == "":
+                        input("Porfavor no deje el nombre vacío, presione enter para reintentar")
+                        continue
+                    pl2 = pl(nombre)
                     difficult = int(input('''
             Seleccione la dificultad con la que desea jugar:
             1) Personalizada (Máximo 10x10)
