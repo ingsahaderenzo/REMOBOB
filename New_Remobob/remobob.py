@@ -34,7 +34,8 @@ def main_menu():
             1) Personalizada (Máximo 10x10)
             3) Facil (3x3)
             5) Medio (5x5)
-            7) Dificil (7x7)'''))
+            7) Dificil (7x7)
+            Ingrese decisión: '''))
                     if difficult == 1: #Esta opción es por si los jugadores eligen jugar con una dificultad personalidad
                         while True:
                             clear_screen()

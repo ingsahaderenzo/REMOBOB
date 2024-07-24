@@ -11,7 +11,7 @@ class Player:
         self.pasw = 0 #contraseña de la caja fuerte, se actualizará en cada partida
         self.cable = 0 #cable de la bomba, se ctualizará en cada partida
 
-#Función creada especificamente para poder seleccionar donde se guarda un dato
+    #Función creada especificamente para poder seleccionar donde se guarda un dato
     def __ubication(n, m, option):
         while True:
             try:
