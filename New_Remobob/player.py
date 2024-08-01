@@ -19,11 +19,11 @@ class Player:
                 clear_screen()
                 row = int(input(f"Porfavor seleccione en que fila desea guardar la {option}(entre 1 y {n}): "))
                 column = int(input(f"Porfavor seleccione en que columna desea guardar la {option}(entre 1 y {m}): "))
-                if row <= n or column <= m: #Verificamos que los valores estén dentro de los posibles
-                    return row, column #Devolvemos tanto fila como columna
-                else:
+                if row > n or column > m: #Verificamos que los valores estén dentro de los posibles
                     input("Los valores ingresados superan el valor máximo posible, presione enter para reintentar")
                     continue
+                else:
+                    return row, column #Devolvemos tanto fila como columna
             except TypeError: #Manejamos los errores en caso de que pongan un tipo de dato erroneo
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
 
