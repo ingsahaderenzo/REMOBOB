@@ -33,6 +33,8 @@ class Player:
         while True:
             try:
                 #Empezamos pidiendo la ubicación de la bomba
+                clear_screen()
+                input(f"Turno de {self.name}, presione enter para iniciar")
                 bomb_r, bomb_c = self.__ubication(row,column,"bomba") 
                 self.bomb = [bomb_r , bomb_c]
 
@@ -111,16 +113,16 @@ class Player:
                 if row == rival.pasw[0] and column == rival.pasw[1]:
                     clear_screen()
                     input(f"Encontraste la contraseña de la caja fuerte, es {rival.pasw[2]} no lo olvides!\nPresione enter para pasar de turno")
-                    break
+                    return False
                 elif row == rival.cable[0] and column == rival.cable[1]:
                     clear_screen()
                     input(f"Encontraste el color del cable a cortar, es {rival.cable[3]} no lo olvides!\nPresione enter para pasar de turno")
-                    break
+                    return False
                 elif row == rival.bomb[0] and column == rival.bomb[1]:
                     pasword = input("Ingrese la contraseña de la caja fuerte: ")
                     if pasword != rival.pasw[2]:
                         input("Contraseña incorrecta, presione enter para pasar de turno")
-                        break
+                        return False
                     while True:
                         cable = int(input('''La contrasñe que ingresaste es la correcta, ves como la puerta de la caja fuerte se abre lentamente
                                 Al abrirse encuentras la bomba que estabas buscando, pero para desactivarla deberás cortar uno de los 3 cables,

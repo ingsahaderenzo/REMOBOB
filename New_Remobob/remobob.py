@@ -47,14 +47,13 @@ def main_menu():
                             column = int(input("Ingrese cantidad de columnas: "))
                             if row >10 or column>10: #Controlamos que haya como maximo 10 por un tema de dificultad de juego
                                 input("Porfavor ingrese un valor menor a 10 para columnas o filas, presione enter para reintentar")
-                                pass
+                                continue
                             break
-                        break
                     elif (difficult == 3 or difficult == 5 or difficult == 7):
                         row , column = difficult, difficult #Para cualquier otra opción los valores serán iguales a la dificultad
-                        break
                     else: 
                         input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
+                        continue
                     pl1.set_all(row,column)
                     pl2.set_all(row,column)
                     while True:
