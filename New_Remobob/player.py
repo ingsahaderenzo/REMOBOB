@@ -132,15 +132,15 @@ class Player:
                                     0) Pasar el turno sin cortar un cable'''))
                         if cable == rival.cable[2]:
                             print("Felicidades, cortaste el cable correcto y desactivaste la bomba antes que el rival. SOS EL GANADOR")
-                            return 1
+                            return True
                         elif cable == 0:
                             input("Decidiste irte sin hacer nada, presione enter para pasar el turno")
-                            return 0
+                            return False
                         elif cable < 1 or cable > 3:
                             input("El valor que ingresaste no corresponde con una opción disponible, presione enter para reintentar")
                             continue
                         else:
                             print("OH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
-                            return 1
+                            return True
             except ValueError:
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")

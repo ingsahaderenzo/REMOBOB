@@ -55,6 +55,15 @@ def main_menu():
                         break
                     else: 
                         input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
+                    pl1.set_all(row,column)
+                    pl2.set_all(row,column)
+                    while True:
+                        if pl1.play(row,column,pl2):
+                            os._exit(0)
+                        elif pl2.play(row,column,pl1):
+                            os._exit(0)
+                        else:
+                            continue
             elif decition == 2: #Mostramos las reglas del juego y volvemos al meno principal
                 clear_screen()
                 print('''
