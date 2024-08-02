@@ -95,6 +95,52 @@ class Player:
             except ValueError: #Excepción que se mostrará en caso de ingresar otro tipo de dato
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
 
-
-player = Player("Renzo")
-player.set_all(3,3)
+    def play(self,n,m,rival):
+        while True:
+            try:
+                clear_screen()
+                input(f"Es el turno de {self.name}, porfavor pasenele el control, presione enter para seguir jugando")
+                while True:
+                    clear_screen()
+                    row = int(input("Porfavor ingrese fila a la que desea moverse: "))
+                    column = int(input("Porfavor ingrese columna a la que desea moverse: "))
+                    if row > n or column > m or row < 1 or column < 1:
+                        input("Los valores ingresados superan el valor máximo posible, presione enter para reintentar")
+                        continue
+                    break
+                if row == rival.pasw[0] and column == rival.pasw[1]:
+                    clear_screen()
+                    input(f"Encontraste la contraseña de la caja fuerte, es {rival.pasw[2]} no lo olvides!\nPresione enter para pasar de turno")
+                    break
+                elif row == rival.cable[0] and column == rival.cable[1]:
+                    clear_screen()
+                    input(f"Encontraste el color del cable a cortar, es {rival.cable[3]} no lo olvides!\nPresione enter para pasar de turno")
+                    break
+                elif row == rival.bomb[0] and column == rival.bomb[1]:
+                    pasword = input("Ingrese la contraseña de la caja fuerte: ")
+                    if pasword != rival.pasw[2]:
+                        input("Contraseña incorrecta, presione enter para pasar de turno")
+                        break
+                    while True:
+                        cable = int(input('''La contrasñe que ingresaste es la correcta, ves como la puerta de la caja fuerte se abre lentamente
+                                Al abrirse encuentras la bomba que estabas buscando, pero para desactivarla deberás cortar uno de los 3 cables,
+                                debes saber que en caso de equivocarte la bomba explotará instantaneamente, puedes intentar cortar el cable ahora
+                                o no hacer nada y volver cuando estes seguro de que hacer. Ingrese su decisión:
+                                    1) Cortar cable rojo
+                                    2) Cortar cable verde
+                                    3) Cortar cable azul
+                                    0) Pasar el turno sin cortar un cable'''))
+                        if cable == rival.cable[2]:
+                            print("Felicidades, cortaste el cable correcto y desactivaste la bomba antes que el rival. SOS EL GANADOR")
+                            return 1
+                        elif cable == 0:
+                            input("Decidiste irte sin hacer nada, presione enter para pasar el turno")
+                            return 0
+                        elif cable < 1 or cable > 3:
+                            input("El valor que ingresaste no corresponde con una opción disponible, presione enter para reintentar")
+                            continue
+                        else:
+                            print("OH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
+                            return 1
+            except ValueError:
+                input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
