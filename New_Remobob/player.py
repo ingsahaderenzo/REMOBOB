@@ -60,14 +60,14 @@ class Player:
                 #Pedimos el color del cable a cortar
                 while True:
                     clear_screen()
-                    cable = input("Seleccione que color es el que desactiva la bomba: \n1) Rojo\n2) Verde\n3) Azul\n Decisión: ")
-                    if cable == "1":
+                    cable = int(input("Seleccione que color es el que desactiva la bomba: \n1) Rojo\n2) Verde\n3) Azul\n Decisión: "))
+                    if cable == 1:
                         color = "Rojo"
                         break
-                    elif cable == "2":
+                    elif cable == 2:
                         color = "Verde"
                         break
-                    elif cable == "3":
+                    elif cable == 3:
                         color = "Azul"
                         break
                     else:
@@ -124,25 +124,44 @@ class Player:
                         input("Contraseña incorrecta, presione enter para pasar de turno")
                         return False
                     while True:
-                        cable = int(input('''La contrasñe que ingresaste es la correcta, ves como la puerta de la caja fuerte se abre lentamente
+                        clear_screen()
+                        cable = int(input('''
+                                La contraseña que ingresaste es la correcta, ves como la puerta de la caja fuerte se abre lentamente
                                 Al abrirse encuentras la bomba que estabas buscando, pero para desactivarla deberás cortar uno de los 3 cables,
                                 debes saber que en caso de equivocarte la bomba explotará instantaneamente, puedes intentar cortar el cable ahora
                                 o no hacer nada y volver cuando estes seguro de que hacer. Ingrese su decisión:
                                     1) Cortar cable rojo
                                     2) Cortar cable verde
                                     3) Cortar cable azul
-                                    0) Pasar el turno sin cortar un cable'''))
+                                    0) Pasar el turno sin cortar un cable
+                                      
+                                    Ingrese decisión: '''))
                         if cable == rival.cable[2]:
-                            print("Felicidades, cortaste el cable correcto y desactivaste la bomba antes que el rival. SOS EL GANADOR")
+                            clear_screen()
+                            print(f'''
+                                Felicidades, cortaste el cable correcto y desactivaste la bomba antes que el rival.
+                                SOS EL GANADOR con {self.points} puntos''')
+                            if self.points > self.max:
+                                self.max = self.points
                             return True
                         elif cable == 0:
-                            input("Decidiste irte sin hacer nada, presione enter para pasar el turno")
+                            clear_screen()
+                            input("\nDecidiste irte sin hacer nada, presione enter para pasar el turno")
                             return False
                         elif cable < 1 or cable > 3:
-                            input("El valor que ingresaste no corresponde con una opción disponible, presione enter para reintentar")
+                            clear_screen()
+                            input("\nEl valor que ingresaste no corresponde con una opción disponible, presione enter para reintentar")
                             continue
                         else:
-                            print("OH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
+                            clear_screen()
+                            print("\nOH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
                             return True
+                else:
+                    if self.points == 0:
+                        input("Te tardaste demasiado en desactivar esa bomba, vuelve a la base, tienes 0 puntos de desactivador y serás despedido")
+                        return True
+                    self.points -= 5
+                    input(f"En esa ubicación no hay nada, ahora tienes {self.points} puntos, presione enter para pasar el turno")
+                    return False
             except ValueError:
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
