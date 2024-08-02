@@ -19,7 +19,7 @@ class Player:
                 clear_screen()
                 row = int(input(f"Porfavor seleccione en que fila desea guardar la {option}(entre 1 y {n}): "))
                 column = int(input(f"Porfavor seleccione en que columna desea guardar la {option}(entre 1 y {m}): "))
-                if row > n or column > m: #Verificamos que los valores estén dentro de los posibles
+                if row > n or column > m or row < 1 or column < 1: #Verificamos que los valores estén dentro de los posibles
                     input("Los valores ingresados superan el valor máximo posible, presione enter para reintentar")
                     continue
                 else:
