@@ -1,6 +1,46 @@
 import os
+import pandas as pd
 from clearer import clear_screen
 from player import Player as pl
+
+def save_game(player):
+    while True:
+        try:
+            while True:
+                clear_screen()
+                deci = int(input("Desea guardar los resultados del ganador ?\n\n1) Si\n2) No\nDecisión: "))
+                if deci == 2:
+                    input("Gracias por jugar, presione enter para cerrar el juego")
+                    os._exit(0)
+                elif deci != 1:
+                    input("Porfavor ingrese una de las opciones validas, presione entere para reintentar")
+                    continue
+                else:
+                    while True:
+                        while True:
+                            rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
+                            if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
+                                break
+                            else: #Si no existe se la pedimos nuevamente
+                                input("La ruta ingresada no existe, porfavor presione enter para reintentar")
+                        df = pd.DataFrame([{
+                            'Nombre' : player.name,
+                            'Puntaje' : player.maxp
+                        }])
+                        ruta_final = os.path.join(rute,"remobob_estat.csv")
+
+                        if not os.path.exists(rute):
+                            os.makedirs(rute)
+                        if not os.path.exists(ruta_final):
+                            df.to_csv(ruta_final,index=False)
+                        else:
+                            df.to_csv(ruta_final,mode='a', header=False, index=False)
+                        input("Partida guardada exitosamente, presione enter para cerrar el juego")
+                        os._exit(0)
+        except ValueError:
+            input("\n\nPorfavor ingrese un número entero, presione enter para reintentar")
+
+        
 
 
 #Menu principal del juego
@@ -16,7 +56,6 @@ def main_menu():
         1) Iniciar Juego
         2) Ver reglas
         3) Ver estadísticas
-        4) Opciones de guardado
         0) Salir del juego
                                 
         Seleccione una opción: '''))
@@ -58,9 +97,9 @@ def main_menu():
                     pl2.set_all(row,column)
                     while True:
                         if pl1.play(row,column,pl2):
-                            os._exit(0)
+                            save_game(pl1)
                         elif pl2.play(row,column,pl1):
-                            os._exit(0)
+                            save_game(pl2)
                         else:
                             continue
             elif decition == 2: #Mostramos las reglas del juego y volvemos al meno principal
@@ -83,22 +122,6 @@ def main_menu():
                 input("\n\nCuando termine de leer las reglas presione enter")
             elif decition == 3: #Pendiente de completar
                 pass 
-            elif decition == 4: #Damos opciones para saber si quiere guardar los datos o no
-                while True:
-                    clear_screen()
-                    save_decition = int(input("Desea guardar los datos del juego en un archivo local?\n1)Si\n2)No\nSeleccione una opción:"))
-                    if save_decition == 1: #Si quiere le preguntamos la ruta donde desea guardar los datos
-                        clear_screen()
-                        rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
-                        if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
-                            input("La ruta ingresada es válida, presione enter para voler al menu principal")
-                            break
-                        else: #Si no existe se la pedimos nuevamente
-                            input("La ruta ingresada no existe, porfavor presione enter para reintentar")
-                    elif save_decition == 2: #Si no quiere volvemos al menu principal
-                        break
-                    else: #En caso de seleccionar una opción invalida mostramos el mensaje de error y le pedimos de vuelta
-                        input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
             elif decition == 0: #Cerramos el juego
                 os.system("cls")
                 input("Gracias por jugar, porfavor presione enter para cerrar el juego")

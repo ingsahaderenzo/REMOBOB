@@ -5,7 +5,7 @@ class Player:
         self.name = name #Nombre del jugador
         self.games = 0 #Cantidad de partidas del jugador
         self.wins = 0 #Cantidad de partidas ganadas por el jugador
-        self.max = 0 #puntaje máximo del jugador
+        self.maxp = 0 #puntaje máximo del jugador
         self.bomb = 0 #Ubicación de la bomba, se actualizará en cada partida
         self.points = 50 #Puntos de desarmador, se actualizará en cada partida
         self.pasw = 0 #contraseña de la caja fuerte, se actualizará en cada partida
@@ -138,11 +138,11 @@ class Player:
                                     Ingrese decisión: '''))
                         if cable == rival.cable[2]:
                             clear_screen()
-                            print(f'''
+                            input(f'''
                                 Felicidades, cortaste el cable correcto y desactivaste la bomba antes que el rival.
                                 SOS EL GANADOR con {self.points} puntos''')
-                            if self.points > self.max:
-                                self.max = self.points
+                            if self.points > self.maxp:
+                                self.maxp = self.points
                             return True
                         elif cable == 0:
                             clear_screen()
@@ -154,7 +154,7 @@ class Player:
                             continue
                         else:
                             clear_screen()
-                            print("\nOH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
+                            input("\nOH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
                             return True
                 else:
                     if self.points == 0:
