@@ -18,6 +18,7 @@ def save_game(player):
                 else:
                     while True:
                         while True:
+                            clear_screen()
                             rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
                             if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
                                 break
@@ -121,7 +122,9 @@ def main_menu():
                 ''')
                 input("\n\nCuando termine de leer las reglas presione enter")
             elif decition == 3: #Pendiente de completar
-                pass 
+                df = pd.read_csv("C:/esta/remobob_estat.csv")
+                print(df)
+                input("Presione enter para volver al menu principal")
             elif decition == 0: #Cerramos el juego
                 os.system("cls")
                 input("Gracias por jugar, porfavor presione enter para cerrar el juego")
