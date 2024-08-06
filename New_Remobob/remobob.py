@@ -3,7 +3,16 @@ import pandas as pd
 from clearer import clear_screen
 from player import Player as pl
 
-def save_game(player):
+def save_game(player, dif):
+    if dif == 1:
+        difficult = "Personalizada"
+    elif dif == 3:
+        difficult = "Fácil"
+    elif dif == 5:
+        difficult = "Medio"
+    elif dif == 7: 
+        difficult == "Dificil"
+
     while True:
         try:
             while True:
@@ -34,7 +43,8 @@ def save_game(player):
                                     continue
                         df = pd.DataFrame([{
                             'Nombre' : player.name,
-                            'Puntaje' : player.maxp
+                            'Puntaje' : player.maxp,
+                            'Dificultad' : difficult
                         }])
                         ruta_final = os.path.join(rute,"remobob_estat.csv")
 
@@ -116,7 +126,7 @@ def main_menu():
 
             Presione enter para finalizar revisión            
 ''')
-                            save_game(pl1)
+                            save_game(pl1, difficult)
                         elif pl2.play(row,column,pl1):
                             clear_screen()
                             input(f'''
@@ -128,7 +138,7 @@ def main_menu():
 
             Presione enter para finalizar revisión            
 ''')
-                            save_game(pl2)
+                            save_game(pl2, difficult)
                         else:
                             continue
             elif decition == 2: #Mostramos las reglas del juego y volvemos al meno principal
@@ -151,7 +161,14 @@ def main_menu():
                 input("\n\nCuando termine de leer las reglas presione enter")
             elif decition == 3: #Pendiente de completar
                 clear_screen()
-                df = pd.read_csv("C:/esta/remobob_estat.csv")
+                if os.path.exists("save_rute.txt"):
+                    with open ("save_rute.txt" , 'r') as archivo:
+                        rute = archivo.read()
+                else:
+                    input("Aun no se han guardado partidas en este juego, presione enter para volver al menu principal")
+                    continue
+                ruta_final = os.path.join(rute,"remobob_estat.csv")
+                df = pd.read_csv(ruta_final)
                 df_ord = df.sort_values("Puntaje", ascending= False)
                 print(df_ord)
                 input("\nPresione enter para volver al menu principal")
