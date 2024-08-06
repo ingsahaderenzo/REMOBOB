@@ -19,11 +19,19 @@ def save_game(player):
                     while True:
                         while True:
                             clear_screen()
-                            rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
-                            if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
+                            if os.path.exists("save_rute.txt"):
+                                with open("save_rute.txt", 'r') as archivo:
+                                    rute = archivo.read()
                                 break
-                            else: #Si no existe se la pedimos nuevamente
-                                input("La ruta ingresada no existe, porfavor presione enter para reintentar")
+                            else:
+                                rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
+                                if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
+                                    with open("save_rute.txt", "w") as archivo:
+                                        archivo.write(rute)
+                                    break
+                                else: #Si no existe se la pedimos nuevamente
+                                    input("La ruta ingresada no existe, porfavor presione enter para reintentar")
+                                    continue
                         df = pd.DataFrame([{
                             'Nombre' : player.name,
                             'Puntaje' : player.maxp
@@ -98,8 +106,28 @@ def main_menu():
                     pl2.set_all(row,column)
                     while True:
                         if pl1.play(row,column,pl2):
+                            clear_screen()
+                            input(f'''
+            Para que el perdedor sepa, los datos del ganador son:
+            
+            Bomba = columna: {pl2.bomb[1]}  fila: {pl2.bomb[0]}
+            Contraseña = columna: {pl2.pasw[1]}  fila: {pl2.pasw[0]}  valor: {pl2.pasw[2]}
+            Cable = columna: {pl2.cable[1]}  fila: {pl2.cable[0]}  color: {pl2.cable[3]}
+
+            Presione enter para finalizar revisión            
+''')
                             save_game(pl1)
                         elif pl2.play(row,column,pl1):
+                            clear_screen()
+                            input(f'''
+            Para que el perdedor sepa, los datos del ganador son:
+            
+            Bomba = columna: {pl1.bomb[1]}  fila: {pl1.bomb[0]}
+            Contraseña = columna: {pl1.pasw[1]}  fila: {pl1.pasw[0]}  valor: {pl1.pasw[2]}
+            Cable = columna: {pl1.cable[1]}  fila: {pl1.cable[0]}  color: {pl1.cable[3]}
+
+            Presione enter para finalizar revisión            
+''')
                             save_game(pl2)
                         else:
                             continue
@@ -122,9 +150,11 @@ def main_menu():
                 ''')
                 input("\n\nCuando termine de leer las reglas presione enter")
             elif decition == 3: #Pendiente de completar
+                clear_screen()
                 df = pd.read_csv("C:/esta/remobob_estat.csv")
-                print(df)
-                input("Presione enter para volver al menu principal")
+                df_ord = df.sort_values("Puntaje", ascending= False)
+                print(df_ord)
+                input("\nPresione enter para volver al menu principal")
             elif decition == 0: #Cerramos el juego
                 os.system("cls")
                 input("Gracias por jugar, porfavor presione enter para cerrar el juego")
