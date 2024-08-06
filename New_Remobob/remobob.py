@@ -1,9 +1,13 @@
 import os
 import pandas as pd
-from clearer import clear_screen
+from clearer import clear_screen #Clear screen es una función que nos permite limpiar la terminal
 from player import Player as pl
 
-def save_game(player, dif):
+
+# Función que se encarga de guardar los datos de la partida
+def save_game(player, dif): #Esperamos un objeto del tipo player además de el nivel de dificultad
+
+    #Intercambiamos el número de dificultad por el nombre correspondiente
     if dif == 1:
         difficult = "Personalizada"
     elif dif == 3:
@@ -17,45 +21,65 @@ def save_game(player, dif):
         try:
             while True:
                 clear_screen()
+
+                #Preguntamos si desean guardar los resultados del ganador o no
                 deci = int(input("Desea guardar los resultados del ganador ?\n\n1) Si\n2) No\nDecisión: "))
-                if deci == 2:
+
+                if deci == 2: #En caso de no guardar nos despedimos y cerramos el juego
                     input("Gracias por jugar, presione enter para cerrar el juego")
                     os._exit(0)
-                elif deci != 1:
+
+                elif deci != 1: #En caso de colocar un valor no válido pedimos que ingrese otro
                     input("Porfavor ingrese una de las opciones validas, presione entere para reintentar")
                     continue
+
+                #En caso de entrar al else es porque desea guardar la partida
                 else:
                     while True:
                         while True:
                             clear_screen()
-                            if os.path.exists("save_rute.txt"):
+
+                            #Primero verificamos si existe el archivo que contiene la ruta para guardar los datos
+                            if os.path.exists("save_rute.txt"): 
+                                #En caso de existir leemos el archivo en una variable
                                 with open("save_rute.txt", 'r') as archivo:
                                     rute = archivo.read()
                                 break
+                            
+                            #En caso de no existir procederemos a pedirlo
                             else:
                                 rute = input("Ingrese la ruta donde desea guardar las estadísticas de juego: ")
-                                if os.path.exists(rute): #Verificamos que la ruta exista y guardamos el dato
-                                    with open("save_rute.txt", "w") as archivo:
-                                        archivo.write(rute)
+                                if os.path.exists(rute): #Verificamos que exista la ruta
+                                    with open("save_rute.txt", "w") as archivo: 
+                                        archivo.write(rute) #Si existe creamos un archivo txt y guardamos la ruta en su interior
                                     break
                                 else: #Si no existe se la pedimos nuevamente
                                     input("La ruta ingresada no existe, porfavor presione enter para reintentar")
                                     continue
+                        
+                        #Creamos la nueva linea con los datos de la partida actual
                         df = pd.DataFrame([{
                             'Nombre' : player.name,
                             'Puntaje' : player.maxp,
                             'Dificultad' : difficult
                         }])
+
+                        #Creamos la ruta donde se guardarán los datos del juego
                         ruta_final = os.path.join(rute,"remobob_estat.csv")
 
-                        if not os.path.exists(rute):
-                            os.makedirs(rute)
-                        if not os.path.exists(ruta_final):
+                        #Verificamos que dicha ruta exista y actuamos en base a eso
+                        if not os.path.exists(ruta_final): #Si no existe previamente el archivo lo crearemos ahora amismo
                             df.to_csv(ruta_final,index=False)
+
+                        #En caso de existir el archivo solamente agregaremos los datos al final
                         else:
                             df.to_csv(ruta_final,mode='a', header=False, index=False)
+                        
+                        #Mostramos mensaje final y cerramos el juego
                         input("Partida guardada exitosamente, presione enter para cerrar el juego")
                         os._exit(0)
+        
+        #Excepción en caso de equivocarse en tipo de dato
         except ValueError:
             input("\n\nPorfavor ingrese un número entero, presione enter para reintentar")
 
