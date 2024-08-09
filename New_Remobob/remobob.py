@@ -152,8 +152,18 @@ def main_menu():
                     pl2.set_all(row,column)
                     while True:
                         if pl1.play(row,column,pl2):
+                            if pl1.points == 0:
+                                show_results(pl2)
+                                input("\n\nPreione enter para cerrar el juego")
+                                os._exit(0)
+                            show_results(pl1)
                             save_game(pl1, difficult)
                         elif pl2.play(row,column,pl1):
+                            if pl2.points == 0:
+                                show_results(pl1)
+                                input("\n\nPreione enter para cerrar el juego")
+                                os._exit(0)
+                            show_results(pl2)
                             save_game(pl2, difficult)
                         else:
                             continue
