@@ -83,7 +83,19 @@ def save_game(player, dif): #Esperamos un objeto del tipo player además de el n
         except ValueError:
             input("\n\nPorfavor ingrese un número entero, presione enter para reintentar")
 
-        
+
+#Función que se usa para mostrar datos finales
+def show_results(plw):
+    clear_screen()
+    input(f'''
+            Para que el perdedor sepa, los datos del rival son:
+            
+            Bomba = columna: {plw.bomb[1]}  fila: {plw.bomb[0]}
+            Contraseña = columna: {plw.pasw[1]}  fila: {plw.pasw[0]}  valor: {plw.pasw[2]}
+            Cable = columna: {plw.cable[1]}  fila: {plw.cable[0]}  color: {plw.cable[3]}
+
+            Presione enter para finalizar revisión            
+''')
 
 
 #Menu principal del juego
@@ -140,28 +152,8 @@ def main_menu():
                     pl2.set_all(row,column)
                     while True:
                         if pl1.play(row,column,pl2):
-                            clear_screen()
-                            input(f'''
-            Para que el perdedor sepa, los datos del ganador son:
-            
-            Bomba = columna: {pl2.bomb[1]}  fila: {pl2.bomb[0]}
-            Contraseña = columna: {pl2.pasw[1]}  fila: {pl2.pasw[0]}  valor: {pl2.pasw[2]}
-            Cable = columna: {pl2.cable[1]}  fila: {pl2.cable[0]}  color: {pl2.cable[3]}
-
-            Presione enter para finalizar revisión            
-''')
                             save_game(pl1, difficult)
                         elif pl2.play(row,column,pl1):
-                            clear_screen()
-                            input(f'''
-            Para que el perdedor sepa, los datos del ganador son:
-            
-            Bomba = columna: {pl1.bomb[1]}  fila: {pl1.bomb[0]}
-            Contraseña = columna: {pl1.pasw[1]}  fila: {pl1.pasw[0]}  valor: {pl1.pasw[2]}
-            Cable = columna: {pl1.cable[1]}  fila: {pl1.cable[0]}  color: {pl1.cable[3]}
-
-            Presione enter para finalizar revisión            
-''')
                             save_game(pl2, difficult)
                         else:
                             continue
