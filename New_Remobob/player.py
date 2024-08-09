@@ -30,7 +30,7 @@ class Player:
                 else: #En caso de que sean válidos devolveremos los datos
                     return row, column #Devolvemos tanto fila como columna
                 
-            #Manejamos los errores en caso de que pongan un tipo de dato erroneo
+            #Manejamos los errores en caso de que pongan un tipo de dato erroneo   
             except TypeError: 
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
 
@@ -39,32 +39,37 @@ class Player:
     def set_all(self, row, column):
         while True:
             try:
-                #Empezamos pidiendo la ubicación de la bomba
                 clear_screen()
                 input(f"Turno de {self.name}, presione enter para iniciar")
+
+                #Pedimos la ubicación de la bomba
                 bomb_r, bomb_c = self.__ubication(row,column,"bomba") 
                 self.bomb = [bomb_r , bomb_c]
 
-                #Pedimos la ubicación de la bomba
+                #Pedimos la ubicación de la contraseña
                 while True: 
                     pasw_r, pasw_c = self.__ubication(row,column,"contraseña") 
-                    if pasw_r == bomb_r and pasw_c == bomb_c: #Vereificamos que no sean posiciones ocupadas
+                    
+                    #Verificamos que la ubicación no este ocrupada
+                    if pasw_r == bomb_r and pasw_c == bomb_c: #En caso de estarlo la pediremos de vuelta
                         input("La ubicación ingresada ya contiene algo, presione enter para reintentar")
                         continue
-                    else: #En caso de estar ocupado las pedimos de vuelta
+                    else: #En caso de no estar ocupado salimos del bucle
                         break
                 
                 #Pedimos la contraseña de 3 digitos de la caja fuerte
                 while True: 
                     clear_screen()
                     pasw = input("Ingrese la contraseña de la caja fuerte(de 3 digitos): ")
-                    if len(pasw) != 3: #Nos aseguramos de que la contraseña sea de 3 digitos
+
+                    #Nos aseguramos de que la contraseña sea de 3 digitos
+                    if len(pasw) != 3: #En caso de que la longitud sea distinta de 3 la pediremos de vuelta
                         input("La contraseña debe ser de 3 digitos, presione enter para reintentar")
                         continue
                     break
-                self.pasw = [pasw_r,pasw_c,pasw]
+                self.pasw = [pasw_r,pasw_c,pasw] #Guardamos los datos de la contraseña, tanto su ubicación como su valor
 
-                #Pedimos el color del cable a cortar
+                #Pedimos el color del cable y asignamos las variabes según sea el caso 
                 while True:
                     clear_screen()
                     cable = int(input("Seleccione que color es el que desactiva la bomba: \n1) Rojo\n2) Verde\n3) Azul\n Decisión: "))
@@ -77,19 +82,21 @@ class Player:
                     elif cable == 3:
                         color = "Azul"
                         break
-                    else:
+                    else: #En caso de ingresar un valor que no es opción mostraremos un error
                         input("El valor ingresado no se corresponde con ningún color, presione enter para reintentar")
                         continue
 
                 #Pedimos la ubicación del cable
                 while True:
-                    cable_r, cable_c = self.__ubication(row,column,"opcion de cable correcta") #Pedimos la ubicación del cable
-                    if (cable_r == bomb_r and cable_c == bomb_c) or (cable_c == pasw_c and cable_r == pasw_r):
+                    cable_r, cable_c = self.__ubication(row,column,"opcion de cable correcta") 
+
+                    #Verificamos que la ubicación ingresada no esté ocupada por el cable o la bomba
+                    if (cable_r == bomb_r and cable_c == bomb_c) or (cable_c == pasw_c and cable_r == pasw_r):#En caso de estar ocupada la pedimos de vuelta
                         input("La ubicación ingresada ya tiene almacenado algo, presione enter para reintentar")
                         continue
                     else:
                         break
-                self.cable = [cable_r,cable_c,cable,color]
+                self.cable = [cable_r,cable_c,cable,color] #Guardamos tanto la ubicación como el número del color y el color
 
                 #Mostramos los datos en pantalla
                 input(f''' 
@@ -98,10 +105,12 @@ class Player:
             Contraseña = columna: {self.pasw[1]}  fila: {self.pasw[0]}  valor: {self.pasw[2]}
             Cable = columna: {self.cable[1]}  fila: {self.cable[0]}  color: {self.cable[3]}
 
-            Presione enter para finalizar revisión''') #mostramos los datos finales y pasamos al siguietne paso
+            Presione enter para finalizar revisión
+            ''')
                 break
 
-            except ValueError: #Excepción que se mostrará en caso de ingresar otro tipo de dato
+            #Excepción que se mostrará en caso de ingresar otro tipo de dato
+            except ValueError:
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
 
     def play(self,n,m,rival):
