@@ -100,9 +100,11 @@ def show_results(plw):
 
 #Menu principal del juego
 def main_menu():
-    while True: #mostramos el menu principal y vemos hacia donde nos dirigiremos.
+    while True:
         clear_screen()
         try:
+
+             #mostramos el menu principal y vemos hacia donde nos dirigiremos.
             decition = int(input('''
         Bienvenido a Remobob 
                                 
@@ -114,19 +116,27 @@ def main_menu():
         0) Salir del juego
                                 
         Seleccione una opción: '''))
-            if decition == 1: #Inicio del juego
-                while True: #En este bucle seleccionaremos la dificultad que tendrá el juego
+            
+            #Inicio del juego
+            if decition == 1:
+                while True: 
                     clear_screen()
+
+                    #Pedimos que ingresen los nombres de los jugadores
                     nombre = input("Ingrese el nombre del primer jugador: ")
-                    if nombre == "":
+                    if nombre == "": #Si dejan el espacio vacío le pediremos que reintente
                         input("Porfavor no deje el nombre vacío, presione enter para reintentar")
                         continue
-                    pl1 = pl(nombre)
+                    pl1 = pl(nombre) #Creamos la instancia de player
+
+                    #Realizamos las mismas acciones para el siguiente jugador
                     nombre = input("Ingrese el nombre del segundo jugador: ")
                     if nombre == "":
                         input("Porfavor no deje el nombre vacío, presione enter para reintentar")
                         continue
                     pl2 = pl(nombre)
+
+                    #Pedimos que selecionen la dificultad
                     difficult = int(input('''
             Seleccione la dificultad con la que desea jugar:
             1) Personalizada (Máximo 10x10)
@@ -134,40 +144,66 @@ def main_menu():
             5) Medio (5x5)
             7) Dificil (7x7)
             Ingrese decisión: '''))
+                    
                     if difficult == 1: #Esta opción es por si los jugadores eligen jugar con una dificultad personalidad
                         while True:
                             clear_screen()
+                            
+                            #Pedimos que ingresen tanto columnas como filas
                             row = int(input("Ingrese cantidad de filas: "))
                             column = int(input("Ingrese cantidad de columnas: "))
-                            if row >10 or column>10: #Controlamos que haya como maximo 10 por un tema de dificultad de juego
-                                input("Porfavor ingrese un valor menor a 10 para columnas o filas, presione enter para reintentar")
+
+                            #Controlamos que haya como maximo 10 por un tema de dificultad de juego
+                            if row >10 or column>10 or row < 3 or column < 3: #En caso de pasarse pedimos que reingresen los valores
+                                input("Porfavor ingrese un valor menor a 10 y mayor a 3para columnas o filas, presione enter para reintentar")
                                 continue
                             break
+                    
+                    #En caso de elegir una dificultad definida guardaremos los valores de columnas y filas correspondientes
                     elif (difficult == 3 or difficult == 5 or difficult == 7):
-                        row , column = difficult, difficult #Para cualquier otra opción los valores serán iguales a la dificultad
+                        row , column = difficult, difficult
+                    
+                    #En caso de ingresar un valor distinto mostramos mensaje de error y pediremos que intenten de vuelta
                     else: 
                         input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
                         continue
+
+                    #Instanciamos todos los valores de ambos jugadores
                     pl1.set_all(row,column)
                     pl2.set_all(row,column)
+
                     while True:
-                        if pl1.play(row,column,pl2):
-                            if pl1.points == 0:
-                                show_results(pl2)
+                        
+                        #En caso de que el turno retorne True es porque la partida termino y accionaremos en base a eso
+                        #Si retorna False la partida sigue y pasamos al siguiente paso del bucle
+
+                        #Turno del primer jugador
+                        if pl1.play(row,column,pl2): #Entramos acá si la partida termino
+                            if pl1.points == 0: #Si el jugador tiene 0 puntos la partida termino porque perdio
+                                show_results(pl2) #Mostramos los resultados del otro jugador
                                 input("\n\nPreione enter para cerrar el juego")
-                                os._exit(0)
-                            show_results(pl1)
-                            save_game(pl1, difficult)
+                                os._exit(0) #Terminamos el juego sin guardar
+                            
+                            #En caso de haber ganado no entramos en el condicional
+                            show_results(pl1) #Mostramos los resultados del ganador al perdedor
+                            save_game(pl1, difficult) #Guardamos los datos de la partida
+
+                        #Turno del segundo jugador, repite los mismos pasos que el anterior
                         elif pl2.play(row,column,pl1):
                             if pl2.points == 0:
                                 show_results(pl1)
                                 input("\n\nPreione enter para cerrar el juego")
                                 os._exit(0)
+                            
                             show_results(pl2)
                             save_game(pl2, difficult)
+                        
+                        #En caso de que no termine la partida en los otros turnos, entraremos acá y pasaremos a la siguiente vuelta
                         else:
                             continue
-            elif decition == 2: #Mostramos las reglas del juego y volvemos al meno principal
+            
+            #Mostramos las reglas del juego y volvemos al meno principal
+            elif decition == 2: 
                 clear_screen()
                 print('''
     1) La idea del juego es revisar el casillero del otro jugador tratando de encontrar dos objetivos principales, 
@@ -185,26 +221,39 @@ def main_menu():
     de volver atrás para seguir buscando
                 ''')
                 input("\n\nCuando termine de leer las reglas presione enter")
-            elif decition == 3: #Pendiente de completar
+            
+            #Opción para mostrar estadísticas del juego
+            elif decition == 3: 
                 clear_screen()
-                if os.path.exists("save_rute.txt"):
+
+                #Verificamos que exista el archivo donde guardamos la ruta para guardar la partida
+                if os.path.exists("save_rute.txt"): #En caso de existir lo abrimos y leemos la ruta
                     with open ("save_rute.txt" , 'r') as archivo:
                         rute = archivo.read()
+                
+                #En caso de no existir es porque no hay partidas guardadas, mostramos mensaje y volvemos al menu principal
                 else:
                     input("Aun no se han guardado partidas en este juego, presione enter para volver al menu principal")
                     continue
-                ruta_final = os.path.join(rute,"remobob_estat.csv")
-                df = pd.read_csv(ruta_final)
-                df_ord = df.sort_values("Puntaje", ascending= False)
-                print(df_ord)
-                input("\nPresione enter para volver al menu principal")
-            elif decition == 0: #Cerramos el juego
+
+                ruta_final = os.path.join(rute,"remobob_estat.csv") #Armamos la ruta final incluyendo el nombre del archivo
+                df = pd.read_csv(ruta_final) #Leemos el archivo csv para conseguir los datos previos
+                df_ord = df.sort_values("Puntaje", ascending= False) #Ordenamos la tabla de mayores a menores
+                print(df_ord) #Mostramos la tabla ordenada
+                input("\nPresione enter para volver al menu principal") #Luego del enter volvemos al menu principal
+            
+            #Cerramos el juego
+            elif decition == 0: 
                 os.system("cls")
                 input("Gracias por jugar, porfavor presione enter para cerrar el juego")
                 break
-            else: #Pedimos que ingrese un valor que sea de las opciones validas
+
+            #En esta opción es porque el jugador no eligio una opción válida
+            else:
                 input("Porfavor ingrese una de las opciones válidas, presione enter para reintentar")
-        except ValueError: #Error que se mostrará en caso de ingresar un tipo de dato erroneo
+
+        #Error que se mostrará en caso de ingresar un tipo de dato erroneo
+        except ValueError:
             input("\n\nPorfavor ingrese un número entero, presione enter para reintentar")
 
 
