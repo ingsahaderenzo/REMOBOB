@@ -113,34 +113,48 @@ class Player:
             except ValueError:
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
 
+
+    #Función del turno de cada jugador
     def play(self,n,m,rival):
         while True:
             try:
-                clear_screen()
+                clear_screen() #Mostramos de quien es el turno y empezamos
                 input(f"Es el turno de {self.name}, porfavor pasenele el control, presione enter para seguir jugando")
                 while True:
                     clear_screen()
+
+                    #Pedimos que ingrese fila y columna a las que desea moverse
                     row = int(input("Porfavor ingrese fila a la que desea moverse: "))
                     column = int(input("Porfavor ingrese columna a la que desea moverse: "))
+
+                    #Verificamos que los datos estén dentro de los posible
                     if row > n or column > m or row < 1 or column < 1:
                         input("Los valores ingresados superan el valor máximo posible, presione enter para reintentar")
                         continue
                     break
-                if row == rival.pasw[0] and column == rival.pasw[1]:
+
+                #Con un condicional decidiremos el camino a tomar
+                if row == rival.pasw[0] and column == rival.pasw[1]: #En caso de encontrar la contraseña mostraremos su valor
                     clear_screen()
                     input(f"Encontraste la contraseña de la caja fuerte, es {rival.pasw[2]} no lo olvides!\nPresione enter para pasar de turno")
-                    return False
-                elif row == rival.cable[0] and column == rival.cable[1]:
+                    return False #Devolvemos falso ya que no termina la partida aun
+                
+                elif row == rival.cable[0] and column == rival.cable[1]: #En caso de encontrar el cable mostraremos su valor
                     clear_screen()
                     input(f"Encontraste el color del cable a cortar, es {rival.cable[3]} no lo olvides!\nPresione enter para pasar de turno")
-                    return False
-                elif row == rival.bomb[0] and column == rival.bomb[1]:
-                    pasword = input("Ingrese la contraseña de la caja fuerte: ")
-                    if pasword != rival.pasw[2]:
+                    return False #Devolvemos falso ya que no termina la partida aun
+                
+                elif row == rival.bomb[0] and column == rival.bomb[1]: #En caso de encontrar la posición de la bomba 
+                    pasword = input("Ingrese la contraseña de la caja fuerte: ") #Primero pediremos la contraseña
+                    
+                    #Verificar que la contraseña sea la que ingreso el rival
+                    if pasword != rival.pasw[2]: #En caso de no ser , se termina el turno
                         input("Contraseña incorrecta, presione enter para pasar de turno")
-                        return False
+                        return False #Devolvemos falso ya que no termina la partida aun
                     while True:
                         clear_screen()
+
+                        #Preguntamos que cable desea cortar el jugador o si no quiere cortar ninguno
                         cable = int(input('''
                                 La contraseña que ingresaste es la correcta, ves como la puerta de la caja fuerte se abre lentamente
                                 Al abrirse encuentras la bomba que estabas buscando, pero para desactivarla deberás cortar uno de los 3 cables,
@@ -152,32 +166,46 @@ class Player:
                                     0) Pasar el turno sin cortar un cable
                                       
                                     Ingrese decisión: '''))
-                        if cable == rival.cable[2]:
+                        
+                        if cable == rival.cable[2]:#Si corta el cable correcto le mostramos los puntos y le decimos que gano
                             clear_screen()
                             input(f'''
                                 Felicidades, cortaste el cable correcto y desactivaste la bomba antes que el rival.
-                                SOS EL GANADOR con {self.points} puntos''')
+                                Sos el ganador con {self.points} puntos''')
+                            
+                            #Si los puntos son mayores que su puntaje máximo se actualizará
                             if self.points > self.maxp:
                                 self.maxp = self.points
-                            return True
-                        elif cable == 0:
+                            return True #Devolvemos True porque ya tenemos un ganador
+                        
+                        elif cable == 0: #Decide irse sin cortar cablesx
                             clear_screen()
                             input("\nDecidiste irte sin hacer nada, presione enter para pasar el turno")
-                            return False
-                        elif cable < 1 or cable > 3:
+                            return False #Devolvemos falso ya que no termina la partida aun
+                        
+                        elif cable < 1 or cable > 3: #Mensaje de error por si ingresa una opción fuera de los valores válidos
                             clear_screen()
                             input("\nEl valor que ingresaste no corresponde con una opción disponible, presione enter para reintentar")
                             continue
-                        else:
+
+                        else: #Esto sucede si el jugador corta el cable incorrecto
                             clear_screen()
                             input("\nOH NO CORTASTE EL CABLE INCORRECTO, BOOOOOOOOOM, MORISTE")
-                            return True
-                else:
-                    if self.points == 0:
-                        input("Te tardaste demasiado en desactivar esa bomba, vuelve a la base, tienes 0 puntos de desactivador y serás despedido")
-                        return True
-                    self.points -= 5
+                            self.points = 0
+                            return True #Devolvemos True pero no tenemos un ganador, si no que un perdedor
+                        
+                else: #Este camino se tomará en caso de no encontrar nada 
+                    self.points -= 5 #Restamos los 5 puntos correspondientes
                     input(f"En esa ubicación no hay nada, ahora tienes {self.points} puntos, presione enter para pasar el turno")
+
+                    #Si la persona tiene 0 puntos pierde automáticamente
+                    if self.points == 0: 
+                        input("Te tardaste demasiado en desactivar esa bomba, vuelve a la base, tienes 0 puntos de desactivador y serás despedido")
+                        return True #Devolvemos True para indicar que tenemos un perdedor
+                    
+                    #En caso de que la perosna aun tenga puntos no entrara en el condicional y se devolverá False indicando que la partida sigue
                     return False
+                
+            #Manejamos los errores en caso de que hayan ingresao un tipo de dato incorrecto
             except ValueError:
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
