@@ -13,18 +13,25 @@ class Player:
 
 
     #Función creada especificamente para poder seleccionar donde se guarda un dato
-    def __ubication(self, n, m, option):
+    def __ubication(self, n, m, option): #Option es la variable que nos indicará que dato estamos ubicando
         while True:
             try:
                 clear_screen()
+                
+                #Pedimos que ingrese tanto columna como fila 
                 row = int(input(f"Porfavor seleccione en que fila desea guardar la {option}(entre 1 y {n}): "))
                 column = int(input(f"Porfavor seleccione en que columna desea guardar la {option}(entre 1 y {m}): "))
-                if row > n or column > m or row < 1 or column < 1: #Verificamos que los valores estén dentro de los posibles
+
+                 #Verificamos que los valores estén dentro de los posibles
+                if row > n or column > m or row < 1 or column < 1: #En caso de fallar los pedimos de vuelta
                     input("Los valores ingresados superan el valor máximo posible, presione enter para reintentar")
                     continue
-                else:
+
+                else: #En caso de que sean válidos devolveremos los datos
                     return row, column #Devolvemos tanto fila como columna
-            except TypeError: #Manejamos los errores en caso de que pongan un tipo de dato erroneo
+                
+            #Manejamos los errores en caso de que pongan un tipo de dato erroneo
+            except TypeError: 
                 input("El tipo de dato que ingrese debe ser un entero, presione enter para reintentar")
 
 
